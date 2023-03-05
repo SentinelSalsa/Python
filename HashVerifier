@@ -1,0 +1,37 @@
+import hashlib
+
+
+# Define a function to calculate the hash of a file
+def calculate_file_hash(filename):
+    # Create a hash object using the SHA256 algorithm
+    hasher = hashlib.sha256()
+
+    # Open the file in binary mode and read it in chunks to save memory
+    with open(filename, 'rb') as f:
+        while True:
+            chunk = f.read(4096)  # Read in 4KB chunks
+            if not chunk:
+                break
+            hasher.update(chunk)  # Update the hash object with each chunk
+
+    # Return the hash digest as a hexadecimal string
+    return hasher.hexdigest()
+
+
+# Define a function to verify the integrity of a file by comparing its hash with a known value
+def verify_file_integrity(filename, expected_hash):
+    # Calculate the hash of the file
+    actual_hash = calculate_file_hash(filename)
+
+    # Compare the actual hash with the expected hash
+    if actual_hash == expected_hash:
+        print(f"The file {filename} is authentic.")
+    else:
+        print(f"WARNING: The file {filename} has been modified or corrupted.")
+
+
+# Example usage:
+filename = 'enter file path here'
+expected_hash = 'enter expected hash here'
+
+verify_file_integrity(filename, expected_hash)
